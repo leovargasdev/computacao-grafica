@@ -1,9 +1,10 @@
-// COMPILAR: g++ moinho.cpp -lGL -lGLU -lglut -o moinho && ./moinho
+// COMPILAR: g++ quadrado.cpp -lGL -lGLU -lglut -o moinho && ./moinho
 #include <stdio.h>
 #include <GL/glut.h>
 #include <math.h>
 GLdouble camx = 0, camy = 7, camz = 30; // Posição camera inicial
-
+GLfloat v[8][3] = {	{-1, -1, 1}, {1, -1, 1}, {1, 1, 1}, {-1, 1, 1},
+					{-1, -1, -1}, {1, -1, -1}, {1, 1, -1}, {-1, 1, -1}};
 GLUquadricObj *quadrica(bool linha){
 	GLUquadricObj *obj1 = gluNewQuadric();
 	if(linha) gluQuadricDrawStyle(obj1, GLU_LINE); // FILL, LINE...
@@ -11,6 +12,56 @@ GLUquadricObj *quadrica(bool linha){
 	gluQuadricOrientation(obj1, GLU_OUTSIDE);
 	gluQuadricNormals(obj1, GLU_SMOOTH);
 	return obj1;
+}
+
+void DesenhaQuadrado(void)
+{
+	glScalef(10, 10, 10);
+	glBegin(GL_QUADS);
+	// Desenha um Quadrado (TRÁS) com a cor atual. R|G|B: VERDE
+	glColor3f(0.2f, 0.8f, 0.2f);
+	glVertex3fv(v[4]);
+	glVertex3fv(v[5]);
+	glVertex3fv(v[6]);
+	glVertex3fv(v[7]);
+
+	// Desenha um Quadrado (INFERIOR) com a cor atual. R|G|B: AMARELO
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[5]);
+	glVertex3fv(v[4]);
+
+	// Desenha um Quadrado (DIREITA) com a cor atual. R|G|B: ROSA
+	glColor3f(1.0f, 0.08f, 0.58f);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[5]);
+	glVertex3fv(v[6]);
+	glVertex3fv(v[2]);
+
+	// Desenha um Quadrado (FRENTE) com a cor atual. R|G|B: VERMELHO
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+
+	// Desenha um Quadrado (SUPERIOR) com a cor atual. R|G|B: CIANO
+	glColor3f(0.0f, 1.0f, 1.0f);
+	glVertex3fv(v[3]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[6]);
+	glVertex3fv(v[7]);
+
+	// Desenha um Quadrado (ESQUERDA) com a cor atual. R|G|B: BRANCO
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[4]);
+	glVertex3fv(v[7]);
+	glVertex3fv(v[3]);
+
+	glEnd();
+	glScalef(1, 1, 1);
 }
 
 void desenha(void) {
@@ -35,7 +86,7 @@ void desenha(void) {
     glEnd();
 	// DESENHA AQUI !!!
 	// ---------------------------------------
-
+	DesenhaQuadrado();
 	//-----------------------------------------
     glutSwapBuffers();
     glFlush();
